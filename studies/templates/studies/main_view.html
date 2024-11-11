@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Study Management</title>
+   <style>
+       body {
+           background-color: #d0d8f0;
+           font-family: Arial, sans-serif;
+       }
+       table {
+           width: 80%;
+           margin: auto;
+           border-collapse: collapse;
+           background-color: #ffffff;
+       }
+       th, td {
+           padding: 10px;
+           text-align: center;
+           border: 1px solid #ccc;
+       }
+       th {
+           background-color: #b0b8d0;
+           font-weight: bold;
+       }
+       h1 {
+           text-align: center;
+           color: #333366;
+       }
+       .btn {
+           background-color: #4d6adf;
+           color: white;
+           padding: 10px 20px;
+           text-decoration: none;
+           border-radius: 4px;
+           display: inline-block;
+           margin-top: 15px;
+       }
+       .actions a {
+           color: white;
+           background-color: #888;
+           padding: 5px 10px;
+           text-decoration: none;
+           border-radius: 3px;
+           margin: 0 5px;
+       }
+       .form-container {
+           text-align: center;
+           margin-top: 20px;
+       }
+   </style>
+</head>
+<body>
+   <h1>Study Management</h1>
+
+   <!-- Start form for deleting selected studies -->
+   <form method="post" action="{% url 'delete_selected_studies' %}">
+       {% csrf_token %}
+       <table>
+           <thead>
+               <tr>
+                   <th>Select</th>
+                   <th>Study Name</th>
+                   <th>Study Phase</th>
+                   <th>Sponsor Name</th>
+                   <th>Study Description</th>
+                   <th>Actions</th>
+               </tr>
+           </thead>
+           <tbody>
+               {% for study in studies %}
+               <tr>
+                   <!-- Checkbox for selecting studies to delete -->
+                   <td><input type="checkbox" name="studies_to_delete" value="{{ study.id }}"></td>
+                   <td>{{ study.study_name }}</td>
+                   <td>{{ study.study_phase }}</td>
+                   <td>{{ study.sponsor_name }}</td>
+                   <td>{{ study.study_description }}</td>
+                   <td class="actions">
+                       <a href="{% url 'view_study' study_id=study.id %}">View</a>
+                       <a href="{% url 'edit_study' study_id=study.id %}">Edit</a>
+                   </td>
+               </tr>
+               {% empty %}
+               <tr>
+                   <td colspan="6">No studies available.</td>
+               </tr>
+               {% endfor %}
+           </tbody>
+       </table>
+
+       <div class="form-container">
+           <a href="{% url 'add_study' %}" class="btn">Add Study</a>
+           <button type="submit" class="btn" onclick="return confirm('Are you sure you want to delete selected studies?');">Delete Selected</button>
+       </div>
+   </form>
+</body>
+</html>
