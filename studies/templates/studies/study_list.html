@@ -1,0 +1,7 @@
+<!-- studies/templates/studies/add_study.html -->
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+    <a href="{% url 'main_view' %}">Cancel</a>
+</form>
